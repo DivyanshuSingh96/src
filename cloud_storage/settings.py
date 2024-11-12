@@ -195,6 +195,12 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:5173",
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "https://cryptic-cloud.vercel.app",  # Vercel domain         # Custom domain, if applicable
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 INTERNAL_IPS = [
     "localhost",
     "127.0.0.1",
