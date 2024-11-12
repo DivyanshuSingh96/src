@@ -15,7 +15,7 @@ SECRET_KEY = env_config("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_config("DJANGO_DEBUG", cast=bool, default=False)
 
-ALLOWED_HOSTS = [".vercel.app"]
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
 
 
 # Application definition
