@@ -1,0 +1,232 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <title>Django Tailwind</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/main/testing_style.css' %}"> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-gray-50 font-serif leading-normal tracking-normal">
+    <section class="relative flex justify-center items-center min-h-screen bg-blue-600">
+        <div class="relative w-97 p-8 rounded-lg shadow-lg justify-center items-center">
+            <h1 class="relative text-center text-white text-xl m-2">Upload Images</h1>
+            <form method="post" enctype="multipart/form-data" class="space-y-4" id="image-upload-form">
+                {% csrf_token %}
+    
+                <div class="relative w-96 h-65 backdrop-filter backdrop-blur-lg flex justify-center items-center flex-col text-xl rounded-lg drop-shadow-xl border border-sky-400">
+                    <div class="form__cont w-92 flex justify-center items-center">
+                        <div class="image relative w-60 h-57 flex justify-center items-center flex-col">
+                            <img class="img__display w-60 h-53">
+                            <div class="image2 relative w-96 h-20 flex justify-around items-center p-4">
+                                <input type="text" name="title" placeholder="Title" class="outline-none border-none mx-2 mt-5" required>
+                                <input type="text" name="author" placeholder="Author" class="outline-none border-none mx-2 mt-5">
+                                <input type="text" name="message" placeholder="Enter your message here" class="outline-none border-none mx-2 mt-5" required>
+                            </div>
+                            <input type="file" name="image_file" class="text-sm img__input m-5" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-blue-700 px-8 py-5 text-white font-semibold">Upload</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- <section class="relative flex justify-center items-center min-h-screen bg-blue-600">
+        <div class="relative w-96 bg-white p-8 rounded-lg shadow-lg">
+            <h1 class="relative text-center text-white text-xl m-2">Upload Images</h1>
+            <form method="post" enctype="multipart/form-data" class="space-y-4" id="image-upload-form">
+                {% csrf_token %}
+
+                <div class="relative w-96 h-65 backdrop-filter backdrop-blur-lg flex justify-center items-center flex-col text-xl rounded-lg drop-shadow-xl border border-sky-400">
+                    <div class="form__cont w-92 flex justify-center items-center">
+
+                        <div class="image relative w-60 h-57 flex justify-center items-center flex-col">
+                            <img class="img__display w-60 h-53">
+                            <div class="image2 relative w-96 h-20 flex justify-around items-center p-4">
+                                <input type="text" name="title" placeholder="Title" class="outline-none border-none mx-2 mt-5" required>
+                                <input type="text" name="author" placeholder="Author" class="outline-none border-none mx-2 mt-5">
+                                <input type="text" name="message" placeholder="Enter your text here2" class="outline-none border-none mx-2 mt-5" required>
+                            </div>
+
+                            <input type="file" name="image_file" class="text-sm img__input mt-5" required>
+                        </div>
+
+                        
+
+                    </div>
+                    <button type="submit" class="bg-blue-700 px-8 py-5 text-white font-semibold">Upload</button>
+                </div>
+                
+            </form>
+
+        </div>
+    </section> -->
+
+    <script>
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const imgInput = document.querySelector(".img__input");
+        //     const dispImg = document.querySelector(".img__display");
+
+        //     imgInput.addEventListener("change", (event) => {
+        //         const imgObj = event.target.files[0];
+        //         if (imgObj) {
+        //             dispImg.src = URL.createObjectURL(imgObj);
+        //         }
+        //     });
+        // });
+
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const form = document.querySelector('form');
+        //     const imgInput = document.querySelector(".img__input");
+        //     const dispImg = document.querySelector(".img__display");
+
+        //     form.addEventListener('submit', (event) => {
+        //         event.preventDefault();
+
+        //         form.reset();
+        //         dispImg.src = '';
+        //         imgInput.value = '';
+        //     });
+
+        //     // Image preview logic
+        //     imgInput.addEventListener("change", (event) => {
+        //         const imgObj = event.target.files[0];
+        //         if (imgObj) {
+        //             dispImg.src = URL.createObjectURL(imgObj);
+        //         }
+        //     });
+        // });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form'); // The form element
+            const imgInput = document.querySelector(".img__input"); // The file input element
+            const dispImg = document.querySelector(".img__display"); // The img tag for preview
+
+            // Add event listener for form submission
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Prevent the form from submitting normally
+
+                // Get the FormData from the form
+                const formData = new FormData(form);
+
+                try {
+                    const response = await uploadImage(formData);
+
+                    setTimeout(() => {
+                        form.reset();
+                        dispImg.src = '';
+                        imgInput.value = '';
+                    }, 1500);
+                } catch (error) {
+                    console.error('Image upload failed:', error);
+                }
+            });
+
+            // Function to upload the image to Cloudflare (or another server)
+            async function uploadImage(formData) {
+                try {
+                    const response = await fetch('/image-upload/apiPOST-Image/', { // Your API endpoint here
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Image upload failed');
+                    }
+
+                    const data = await response.json();
+                    console.log('Image uploaded successfully', data);
+
+                    setTimeout(() => {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Your image is successfully uploaded.',
+                            icon: 'success',
+                            confirmButtonText: 'Cool'
+                        });
+                    }, 1500);
+                    
+
+                    // Call fetchImages if needed (to refresh image list)
+                    // fetchImages();
+
+                    return data; // Return response data
+                } catch (error) {
+                    console.error('Error uploading image:', error);
+                    throw error; // Propagate the error for handling in the form submission
+                }
+            }
+
+            // Fetch images function (if you want to display the updated image list)
+            // function fetchImages() {
+            //     // Add your code here to fetch and display images after upload
+            //     console.log('Fetching updated image list');
+            // }
+
+            imgInput.addEventListener("change", (event) => {
+                const imgObj = event.target.files[0];
+                if (imgObj) {
+                    dispImg.src = URL.createObjectURL(imgObj);
+                }
+            });
+        });
+
+
+        // Function to get images and display them
+        // function fetchImages() {
+        //     fetch('/image-upload/apiGET-Image/')  // replace with the correct path to your API
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             const container = document.getElementById('image-container');
+        //             container.innerHTML = '';
+        //             data.forEach(image => {
+                        
+
+        //                 const img = document.createElement('img');
+                        
+        //                 img.src = image.cloudflare_path;
+        //                 img.alt = image.title;
+        //                 img.style.width = '150px';
+        //                 img.style.borderRadius = '10px';
+        //                 container.appendChild(img);
+
+        //                 const title = document.createElement('h3');
+        //                 title.textContent = image.title;
+        //                 container.appendChild(title);
+
+        //                 const author = document.createElement("p");
+        //                 author.textContent = image.author
+        //                 container.appendChild(author);
+        //             });
+        //         });
+        // }
+        
+        // Function to handle form submission
+        // document.getElementById('image-upload-form').onsubmit = function(event) {
+        //     event.preventDefault();
+        //     const formData = new FormData(this);
+        
+        //     fetch('/image-upload/apiPOST-Image/', {
+        //         method: 'POST',
+        //         body: formData,
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         alert(data.message || "Uploaded successfully");
+        //         fetchImages();
+        //     })
+        //     .catch(error => console.error('Error:', error));
+        // };
+        
+        // fetchImages();
+        </script>
+
+        <!-- <script src="{% static 'js/script.js' %}"></script> -->
+</body>
+</html>

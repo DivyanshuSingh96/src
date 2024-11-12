@@ -1,0 +1,38 @@
+/* body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+} */
+
+h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 3rem;
+}
+
+.image {
+    position: relative;
+    width: 90%;
+    height: 5rem; /* Adjusted based on your desired height */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f97316; /* Tailwind's bg-orange-600 */
+    padding: 1rem; /* Adjusted for some space inside the container */
+}
+
+input[type="text"] {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    font-size: 0.875rem; /* Small text (text-sm equivalent) */
+    color: white;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 0.5rem; /* Adds space between inputs */
+}
+
+input[type="text"]::placeholder {
+    color: white;
+}

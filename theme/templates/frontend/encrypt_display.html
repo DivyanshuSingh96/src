@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt Display</title>
+</head>
+<body>
+
+    <section class="relative flex justify-center items-center min-h-screen bg-blue-600">
+        <div class="relative w-97 p-8 rounded-lg shadow-lg justify-center items-center">
+            <h1 class="relative text-center text-white text-xl m-2">Upload Images</h1>
+            <form method="post" enctype="multipart/form-data" class="space-y-4" id="image-upload-form">
+                {% csrf_token %}
+    
+                <div class="relative w-96 h-65 backdrop-filter backdrop-blur-lg flex justify-center items-center flex-col text-xl rounded-lg drop-shadow-xl border border-sky-400">
+                    <div class="form__cont w-92 flex justify-center items-center">
+                        <div class="image relative w-60 h-57 flex justify-center items-center flex-col">
+                            <img class="img__display w-60 h-53">
+                            <div class="image2 relative w-96 h-20 flex justify-around items-center p-4">
+                                
+                                <input type="text" name="public_key" placeholder="Public Key" class="outline-none border-none mx-2 mt-5" required>
+                                <input type="text" name="private_key" placeholder="Private Key" class="outline-none border-none mx-2 mt-5">
+                                <input type="text" name="message" placeholder="Enter your text here2" class="outline-none border-none mx-2 mt-5" required>
+                            </div>
+                            <input type="file" name="image_file" class="text-sm img__input m-5" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-blue-700 px-8 py-5 text-white font-semibold">Upload</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    
+</body>
+</html>

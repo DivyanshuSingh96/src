@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Interface</title>
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+</head>
+<body>
+    <h1>API Interface</h1>
+    <form id="uploadForm">
+        <h2>Upload Key</h2>
+        <label for="key">Key:</label>
+        <input type="text" id="key" name="key" required>
+        <label for="keyId">Key ID:</label>
+        <input type="text" id="keyId" name="keyId" required>
+        <button type="submit">Upload</button>
+    </form>
+    
+    <form id="getForm">
+        <h2>Get Key</h2>
+        <label for="getKeyId">Key ID:</label>
+        <input type="text" id="getKeyId" name="key_id" required>
+        <button type="submit">Get Key</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script src="{% static 'assets/js/api.js' %}"></script>
+</body>
+</html>

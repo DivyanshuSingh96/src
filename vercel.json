@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "cloud_storage/wsgi.py",
+        "use": "@vercel/python",
+        "config": {
+          "maxLambdaSize": "200mb",
+          "runtime": "python3.10"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "cloud_storage/wsgi.py"
+      }
+    ]
+  }

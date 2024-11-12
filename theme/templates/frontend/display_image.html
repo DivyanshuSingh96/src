@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Display Images</title>
+</head>
+<body class="bg-gray-50 font-serif leading-normal tracking-normal">
+
+        <section class="relative flex justify-center items-center min-h-screen bg-blue-600">
+            <div class="relative w-97 p-8 rounded-lg shadow-lg justify-center items-center">
+                <h1 class="relative text-center text-white text-xl m-2">Image and Encryption Details</h1>
+
+                <div class="relative w-96 h-65 backdrop-filter backdrop-blur-lg flex justify-center items-center flex-col text-xl rounded-lg drop-shadow-xl border border-sky-400">
+                    <div class="form__cont w-92 flex justify-center items-center">
+                        <form method="post" enctype="multipart/form-data" class="relative space-y-4" id="image-upload-form">
+                            {% csrf_token %}
+
+                            <div class="relative w-96 h-65 flex justify-center items-center flex-col bg-sky-400">
+                                <img src="{{ image_url }}" alt="Encrypted Image" class="w-60 h-53">
+                                <div class="image relative w-96 h-54 flex justify-around items-center mb-4">
+                                    <!-- <img class="img__display w-60 h-53"> -->
+                                    
+                                    <div class="image2 relative w-96 h-30 flex justify-center items-center p-4 flex-col flex-grow">
+                                        <p class="text-xs w-20 shrink-0">Public Key:</p>
+                                        <div style="word-wrap: break-word; overflow-wrap: break-word; font-size: 14px; border: 2px solid #3498eb; width: 300px; height: 100px; overflow-y: auto; overflow-x: auto; margin-left: 10px;" id="public_key">{{private_key}}</div>
+                                    </div>
+
+                                    <div class="image2 relative w-96 h-30 flex justify-center items-center p-4 flex-col flex-grow" style="top: 15px;">
+                                        <p class="text-xs w-20 shrink-0">Private Key:</p>
+                                        <div style="word-wrap: break-word; overflow-wrap: break-word; font-size: 14px; border: 2px solid #3498eb; width: 300px; height: 100px; overflow-y: auto; overflow-x: auto; margin-left: 10px;" id="private_key">{{public_key}}</div>
+                                    </div>
+                                </div>
+                                <button onclick="submitToCloudflare()" type="submit" class="relative bg-blue-700 px-8 py-5 text-white font-semibold">Submit to Cloudflare</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    
+                </div>
+
+                <div id="response-message"></div>
+            </div>
+        </section>
+
+    <script>
+        async function submitToCloudflare() {
+            // Retrieve keys and image URL from HTML elements
+            const publicKey = document.getElementById('public_key').innerText;
+            const privateKey = document.getElementById('private_key').innerText;
+            const imageUrl = document.querySelector('img').src;  // Assuming the image is already displayed
+            const title = document.getElementById('title').value; // Assuming there's an input for title
+            const author = document.getElementById('author').value; // Assuming there's an input for author
+            const message = document.getElementById('message').value; // Assuming there's an input for message
+
+            const imageData = {
+                image_file: imageUrl,  // Image URL
+                public_key: publicKey, // Public key for encryption
+                private_key: privateKey, // Private key for encryption
+                title: title,          // Image title
+                author: author,        // Image author
+                message: message,      // Custom message or identifier
+                is_encrypted: true     // Encryption status (assuming it's true for encrypted images)
+            };
+
+            try {
+                const response = await fetch('/api/apiEncrypt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(imageData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`Upload failed: ${errorData.message}`);
+                }
+
+                const result = await response.json();
+                document.getElementById('response-message').innerText = "Successfully uploaded image and keys to Cloudflare!";
+
+                setTimeout(() => {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Your data is successfully uploaded.',
+                        icon: 'success',
+                        confirmButtonText: 'Cool'
+                    });
+                }, 1500);
+            } catch (error) {
+                console.error("Error during upload:", error);
+                document.getElementById('response-message').innerText = "An error occurred during the upload process.";
+
+                setTimeout(() => {
+                    Swal.fire({
+                        title: 'No Success!',
+                        text: 'Your data is not successfully uploaded.',
+                        icon: 'error',
+                        confirmButtonText: 'Uncool'
+                    });
+                }, 1500);
+            }
+        }
+
+        // async function uploadImageToCloudflare(imageUrl) {
+        //     const imageData = { image_url: imageUrl, is_encrypted: true };
+
+        //     try {
+        //         const response = await fetch('/image-upload/apiPOST-Image', {
+        //             method: 'POST',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify(imageData)
+        //         });
+
+        //         if (!response.ok) {
+        //             const errorData = await response.json();
+        //             throw new Error(`Image upload failed: ${errorData.message}`);
+        //         }
+
+        //         const result = await response.json();
+        //         return result.image_url;  // Return the URL or identifier of the uploaded image
+        //     } catch (error) {
+        //         console.error("Error uploading image:", error);
+        //         throw error;
+        //     }
+        // }
+
+        // async function uploadKeysToCloudflare(publicKey, privateKey) {
+        //     const keyData = { 
+        //         public_key: publicKey,
+        //         private_key: privateKey,
+        //     };
+
+        //     try {
+        //         const response = await fetch('/api/apiPOST', {
+        //             method: 'POST',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify(keyData)
+        //         });
+
+        //         if (!response.ok) {
+        //             const errorData = await response.json();
+        //             throw new Error(`Keys upload failed: ${errorData.message}`);
+        //         }
+
+        //         const result = await response.json();
+        //         return result.message;
+        //     } catch (error) {
+        //         console.error("Error uploading keys:", error);
+        //         throw error;
+        //     }
+        // }
+
+        // async function submitToCloudflare() {
+        //     // Retrieve keys and image URL from HTML elements
+        //     const publicKey = document.getElementById('public_key').innerText;
+        //     const privateKey = document.getElementById('private_key').innerText;
+        //     const imageUrl = document.querySelector('img').src;
+
+        //     try {
+        //         // Step 1: Upload the image and get the Cloudflare image URL
+        //         const uploadedImageUrl = await uploadImageToCloudflare(imageUrl);
+                
+        //         // Step 2: Upload the keys, passing in the Cloudflare image URL
+        //         const message = await uploadKeysToCloudflare(publicKey, privateKey);
+
+        //         document.getElementById('response-message').innerText = "Successfully uploaded image and keys to Cloudflare!";
+        //     } catch (error) {
+        //         document.getElementById('response-message').innerText = "An error occurred during the upload process.";
+        //     }
+        // }
+
+    </script>
+    
+</body>
+</html>

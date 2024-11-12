@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Encryption System</title>
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Message Encryption/Decryption</h1>
+        <form id="encryptionForm">
+            <label for="message">Message to Encrypt:</label>
+            <textarea id="message" placeholder="Enter your message"></textarea><br>
+
+            <button type="button" id="encryptBtn">Encrypt & Post Keys</button>
+        </form>
+
+        <form id="decryptionForm">
+            <label for="encryptedMessage">Encrypted Message:</label>
+            <textarea id="encryptedMessage" placeholder="Enter encrypted message"></textarea><br>
+
+            <button type="button" id="decryptBtn">Decrypt & Get Keys</button>
+        </form>
+    </div>
+
+    <script src="{% static 'assets/js/app2.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+django-storages[s3]
+django
+python-decouple
+django-tailwind
+django-tailwind[reload]
+djangorestframework
+djangorestframeworkjwt
+celery
+cloudflare

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
+    <title>Image Upload</title>
+</head>
+<body>
+
+    <section class="relative flex justify-center items-center min-h-screen bg-blue-600">
+
+        <div class="relative w-96">
+            <form method="post" enctype="multipart/form-data" name="info">
+                {% csrf_token %}
+
+                    <div class="relative w-96 h-65 backdrop-filter backdrop-blur-lg flex justify-center items-center flex-col text-xl rounded-lg drop-shadow-xl border border-sky-400">
+                        <div class="w-92 flex justify-around items-center">
+
+                            <div class="image relative w-60 h-57 flex justify-center items-center flex-col">
+                                <img alt="" class="img__display w-60 h-53">
+                                <input type="text" placeholder="Enter your text" class="outline-none border-none mt-5" name="description" required>
+                                <!-- <div class="outline-none border-none mt-5"></div> -->
+                                <div class="text-sm img__input mt-5">{{form.as_p}}</div>
+                                <!-- <input type="file" placeholder="choose your file" class="img__input mt-5 text-sm">                   -->
+                            </div>
+
+                        </div>
+                        <button type="submit" class="bg-blue-700 px-8 py-5 text-white font-semibold">Upload</button>
+                    </div>
+                
+                
+            </form>
+        </div>
+
+    </section>
+
+    <form id="uploadForm">
+        <input type="file" id="imageInput" accept="image/*" required />
+        <button type="button" id="encryptButton">Encrypt & Generate Key</button>
+        <button type="submit" id="uploadButton">Upload to Cloudflare</button>
+    </form>
+    <p id="statusMessage"></p>
+
+    <!-- <script src="{% static 'js/script.js' %}"></script> -->
+    
+</body>
+</html>
