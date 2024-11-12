@@ -4,6 +4,6 @@ python-decouple
 django-tailwind
 django-tailwind[reload]
 djangorestframework
-djangorestframeworkjwt
+djangorestframework-jwt
 celery
 cloudflare
