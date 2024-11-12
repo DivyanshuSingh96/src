@@ -35,15 +35,6 @@ from imageViewer.services import upload_image_to_cloudflare
 from .serializers import TaskSerializer, EncryptedImageSerializer
 from .models import Task, EncryptedImage
 
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-file_handler = logging.FileHandler('debug.log')  # Logs to a file
-file_handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
-
 class UploadKey(APIView):
     def post(self, request):
         # Log the received data for debugging
@@ -141,8 +132,8 @@ class GetKey(APIView):
 #         form = ImagePostForm()
 #     return render(request, 'upload_image.html', {'form': form})
 
-KEYS_UPLOAD_API_URL = "http://127.0.0.1:8000/api/apiPost"  # API for uploading keys
-IMAGE_UPLOAD_API_URL = "http://127.0.0.1:8000/image-upload/apiPOST-Image"  # API for uploading image
+KEYS_UPLOAD_API_URL = "http://cryptic-cloud.vercel.app/api/apiPost"  # API for uploading keys
+IMAGE_UPLOAD_API_URL = "http://cryptic-cloud.vercel.app/image-upload/apiPOST-Image"  # API for uploading image
 
 @api_view(["POST"])
 def upload_encrypted_image(request):
@@ -483,7 +474,7 @@ def display_image_view(request, pk, is_encrypted=False):
     public_key, private_key = generate_rsa_keypair()
 
     # Define API URL for fetching images
-    api_url = f'http://127.0.0.1:8000/image-upload/apiGET-Image/{pk}?is_encrypted={is_encrypted}'
+    api_url = f'http://cryptic-cloud.vercel.app/image-upload/apiGET-Image/{pk}?is_encrypted={is_encrypted}'
 
     try:
         # Fetch the image from the API
