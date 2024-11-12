@@ -5,8 +5,7 @@
         "src": "cloud_storage/wsgi.py",
         "use": "@vercel/python",
         "config": {
-          "maxLambdaSize": "200mb",
-          "runtime": "python3.10"
+          "maxLambdaSize": "200mb"
         }
       }
     ],
