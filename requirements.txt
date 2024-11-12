@@ -11,3 +11,4 @@ pycryptodome
 pillow
 django-cors-headers
 requests
+numpy
