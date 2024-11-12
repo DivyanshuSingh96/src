@@ -7,3 +7,7 @@ djangorestframework
 djangorestframework-jwt
 celery
 cloudflare
+pycryptodome
+pillow
+django-cors-headers
+requests
